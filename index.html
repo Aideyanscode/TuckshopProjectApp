@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NFC Tuckshop System</title>
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+  <section class="landing">
+    <h1>🏫 NFC Tuckshop System</h1>
+    <p style="color:var(--muted);max-width:520px;margin:1rem auto;">
+      Prepaid wallet POS for school tuckshops. Tap NFC card, select items, confirm — balance stays on the server.
+      Runs fully on your school LAN (no internet required).
+    </p>
+    <div class="cards">
+      <a href="pos/index.html" class="card-link">
+        <h2>🛒 POS Terminal</h2>
+        <p style="color:var(--muted);font-size:0.9rem;">Counter checkout — tap card & sell snacks</p>
+      </a>
+      <a href="admin/index.html" class="card-link">
+        <h2>📋 Admin</h2>
+        <p style="color:var(--muted);font-size:0.9rem;">Inventory, students, sellers, reports</p>
+      </a>
+      <a href="seller/index.html" class="card-link">
+        <h2>👤 Seller</h2>
+        <p style="color:var(--muted);font-size:0.9rem;">Add items, view pastries, drinks & sales</p>
+      </a>
+    </div>
+    <p style="margin-top:2rem;font-size:0.85rem;color:var(--muted);">
+      API health: <span id="health-status">checking…</span>
+    </p>
+  </section>
+  <script src="assets/js/api.js"></script>
+  <script>
+    apiGet('health.php').then(d => {
+      document.getElementById('health-status').textContent = d.ok ? '✓ Database connected' : '✗ ' + (d.message || 'Error');
+    }).catch(e => {
+      document.getElementById('health-status').textContent = '✗ ' + e.message + ' — start PHP server & import sql/schema.sql';
+    });
+  </script>
+</body>
+</html>

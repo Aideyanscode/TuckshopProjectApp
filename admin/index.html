@@ -1,0 +1,181 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuckshop Admin</title>
+  <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body>
+  <section id="login-screen" class="nfc-panel">
+    <h2>Admin login</h2>
+    <p class="hint">Default password is in config/config.php — change it before going live.</p>
+    <form id="login-form">
+      <input type="password" id="admin-password" placeholder="Admin password" required style="width:100%;padding:1rem;margin-top:1rem;border-radius:8px;border:2px solid var(--surface2);background:var(--bg);color:var(--text);">
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1rem;">Login</button>
+    </form>
+    <p id="login-error" class="alert alert-error hidden" style="margin-top:1rem;"></p>
+    <p style="margin-top:1rem;"><a href="../index.html">← Home</a></p>
+  </section>
+
+  <div id="admin-app" class="hidden">
+    <header class="app-header">
+      <h1>📋 Tuckshop Admin</h1>
+      <nav class="nav-links">
+        <a href="../pos/index.html">Open POS</a>
+        <a href="../seller/index.html">Seller portal</a>
+        <a href="../index.html">Home</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div class="tabs">
+        <button type="button" class="tab active" data-tab="inventory">Inventory</button>
+        <button type="button" class="tab" data-tab="students">Students</button>
+        <button type="button" class="tab" data-tab="products">Products</button>
+        <button type="button" class="tab" data-tab="transactions">Transactions</button>
+        <button type="button" class="tab" data-tab="sellers">Sellers</button>
+        <button type="button" class="tab" data-tab="settings">Settings</button>
+      </div>
+
+      <div id="tab-inventory" class="tab-panel active">
+        <div class="stat-cards" id="inventory-stats"></div>
+        <div class="card">
+          <h2>🥧 Pastries — stock</h2>
+          <table>
+            <thead><tr><th></th><th>Product</th><th>Price</th><th>Available</th><th>Update stock</th></tr></thead>
+            <tbody id="inventory-pastry-tbody"></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h2>🧃 Drinks — stock</h2>
+          <table>
+            <thead><tr><th></th><th>Product</th><th>Price</th><th>Available</th><th>Update stock</th></tr></thead>
+            <tbody id="inventory-drink-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-students" class="tab-panel">
+        <div class="card">
+          <h2>Add student</h2>
+          <form id="form-add-student">
+            <div class="form-row">
+              <div><label>Student ID</label><input id="new-number" required placeholder="e.g. STU-2026-001"></div>
+              <div><label>Full name</label><input id="new-name" required></div>
+              <div><label>Class</label><input id="new-class" required placeholder="JSS 2A"></div>
+              <div><label>NFC UID (optional)</label><input id="new-nfc" placeholder="Scan card"></div>
+              <div><label>Opening balance ₦</label><input id="new-balance" type="number" min="0" value="0"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add student</button>
+            <p id="student-form-msg" class="hidden"></p>
+          </form>
+        </div>
+        <div class="card">
+          <h2>Students</h2>
+          <input type="search" id="student-search" placeholder="Search name, class, ID, NFC…" style="width:100%;max-width:400px;padding:0.6rem;margin-bottom:1rem;border-radius:8px;border:1px solid var(--surface2);background:var(--bg);color:var(--text);">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Name</th><th>Class</th><th>Balance</th><th>NFC</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="students-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-products" class="tab-panel">
+        <div class="card">
+          <h2>Add product</h2>
+          <form id="form-add-product">
+            <div class="form-row">
+              <div><label>Name</label><input id="prod-name" required></div>
+              <div><label>Price ₦</label><input id="prod-price" type="number" min="1" required></div>
+              <div><label>Type</label>
+                <select id="prod-category">
+                  <option value="pastry">Pastry</option>
+                  <option value="drink">Drink</option>
+                </select>
+              </div>
+              <div><label>Icon (emoji)</label><input id="prod-icon" value="🍞"></div>
+              <div><label>Starting stock</label><input id="prod-stock" type="number" min="0" value="0"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add product</button>
+          </form>
+        </div>
+        <div class="card">
+          <h2>🥧 Pastries</h2>
+          <table>
+            <thead><tr><th></th><th>Name</th><th>Price</th><th>Stock</th><th>Update stock</th><th>Active</th></tr></thead>
+            <tbody id="products-pastry-tbody"></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h2>🧃 Drinks</h2>
+          <table>
+            <thead><tr><th></th><th>Name</th><th>Price</th><th>Stock</th><th>Update stock</th><th>Active</th></tr></thead>
+            <tbody id="products-drink-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-transactions" class="tab-panel">
+        <div class="card">
+          <h2>Daily sales</h2>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;">
+            <input type="date" id="tx-date">
+            <button type="button" class="btn btn-secondary" id="btn-export">Export CSV</button>
+          </div>
+          <p id="tx-summary" style="color:var(--muted);margin-bottom:1rem;"></p>
+          <table>
+            <thead><tr><th>#</th><th>Time</th><th>Student</th><th>Class</th><th>Terminal</th><th>Amount</th></tr></thead>
+            <tbody id="transactions-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-sellers" class="tab-panel">
+        <div class="card">
+          <h2>Create seller account</h2>
+          <p style="color:var(--muted);margin-bottom:1rem;font-size:0.9rem;">Sellers can add pastries/drinks, view inventory and transactions — no students, top-ups, or settings.</p>
+          <form id="form-add-seller">
+            <div class="form-row">
+              <div><label>Username</label><input id="seller-username" required placeholder="e.g. counter1"></div>
+              <div><label>Full name</label><input id="seller-name" required placeholder="e.g. Mary Okonkwo"></div>
+              <div><label>Password</label><input id="seller-password" type="password" required minlength="4"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create seller</button>
+            <p id="seller-form-msg" class="hidden"></p>
+          </form>
+        </div>
+        <div class="card">
+          <h2>Seller accounts</h2>
+          <table>
+            <thead><tr><th>Username</th><th>Name</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="sellers-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-settings" class="tab-panel">
+        <div class="card">
+          <h2>Limits & school name</h2>
+          <form id="form-settings">
+            <div class="form-row">
+              <div><label>School name</label><input id="set-school"></div>
+              <div><label>Max daily spend (₦, 0 = off)</label><input id="set-max-daily" type="number" min="0"></div>
+              <div><label>Max drinks per day</label><input id="set-max-drinks" type="number" min="0"></div>
+              <div><label>Max pastries per day</label><input id="set-max-pastries" type="number" min="0"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save settings</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/product-groups.js"></script>
+  <script src="../assets/js/live-sync.js"></script>
+  <script src="../assets/js/admin.js"></script>
+</body>
+</html>
