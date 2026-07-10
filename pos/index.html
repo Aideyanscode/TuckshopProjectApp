@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1a2332">
+  <title>Tuckshop POS</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body class="pos-layout">
+  <header class="app-header">
+    <h1>🛒 Tuckshop POS</h1>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <label style="font-size:0.9rem;color:var(--muted);">
+        Counter:
+        <select id="terminal-select" style="margin-left:0.5rem;padding:0.4rem;border-radius:6px;background:var(--surface2);color:var(--text);border:none;"></select>
+      </label>
+      <a href="../index.html">Home</a>
+    </div>
+  </header>
+
+  <div id="alert-box" class="alert alert-error hidden" style="margin:0 1rem;"></div>
+
+  <section id="nfc-screen" class="nfc-panel">
+    <h2>Tap student NFC card</h2>
+    <p class="hint">Place card on reader — UID appears below (keyboard wedge) or type UID manually.</p>
+    <input type="text" id="nfc-input" placeholder="NFC UID…" autocomplete="off" autofocus>
+  </section>
+
+  <div id="pos-screen" class="hidden pos-active">
+    <div class="pos-student-bar empty">
+      <div class="student-info">
+        <h2 id="student-name">Tap NFC card</h2>
+        <p class="meta" id="student-meta">Waiting for card…</p>
+      </div>
+      <div class="balance-display">
+        <div class="label">Balance</div>
+        <div class="amount" id="balance">—</div>
+      </div>
+    </div>
+
+    <main class="pos-main">
+      <div class="product-sections" id="product-sections"></div>
+      <aside class="cart-panel">
+        <h3>Cart</h3>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-total">Total: <span id="cart-total">₦0</span></div>
+      </aside>
+    </main>
+
+    <footer class="pos-footer">
+      <button type="button" class="btn btn-secondary" id="btn-clear-card">New card</button>
+      <button type="button" class="btn btn-danger" id="btn-cancel">Clear cart</button>
+      <button type="button" class="btn btn-success" id="btn-confirm" disabled>Confirm purchase</button>
+    </footer>
+  </div>
+
+  <div id="receipt-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <h3>Receipt</h3>
+      <div class="receipt" id="receipt-body"></div>
+      <button type="button" class="btn btn-primary" id="btn-close-receipt" style="width:100%;margin-top:1rem;">Done</button>
+    </div>
+  </div>
+
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/product-groups.js"></script>
+  <script src="../assets/js/pwa.js"></script>
+  <script src="../assets/js/pos.js"></script>
+</body>
+</html>

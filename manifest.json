@@ -1,0 +1,49 @@
+{
+  "name": "JA Tuckshop",
+  "short_name": "JA",
+  "description": "JA Tuckshop hybrid school ordering and POS app",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "food"],
+  "shortcuts": [
+    {
+      "name": "Student orders",
+      "url": "student/index.html",
+      "description": "Order tuckshop items for another day"
+    },
+    {
+      "name": "Parent top-up",
+      "url": "parent/index.html",
+      "description": "Pay for linked children with Paystack"
+    },
+    {
+      "name": "Seller queue",
+      "url": "seller/index.html",
+      "description": "View the queued student orders"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>JA Tuckshop Student</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/icons/icon.svg">
+  <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body>
+  <section id="login-screen" class="nfc-panel">
+    <h2>JA Tuckshop Student</h2>
+    <p class="hint">Sign in with your student number to schedule prepaid tuckshop orders for another day.</p>
+    <form id="login-form">
+      <input type="text" id="student-number" placeholder="Student number" required autocomplete="username" style="width:100%;padding:1rem;margin-top:1rem;border-radius:8px;border:2px solid var(--surface2);background:var(--bg);color:var(--text);">
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1rem;">Login</button>
+    </form>
+    <p id="login-error" class="alert alert-error hidden" style="margin-top:1rem;"></p>
+    <p style="margin-top:1rem;"><a href="../index.html">Home</a></p>
+  </section>
+
+  <div id="student-app" class="hidden">
+    <header class="app-header">
+      <h1>JA Tuckshop Student</h1>
+      <nav class="nav-links">
+        <span id="student-greeting" style="color:var(--muted);font-size:0.9rem;"></span>
+        <button type="button" id="btn-logout">Logout</button>
+        <a href="../index.html">Home</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div class="stat-cards" id="student-stats"></div>
+
+      <div class="card">
+        <h2>Order ahead</h2>
+        <p style="color:var(--muted);margin-bottom:1rem;font-size:0.9rem;">
+          Orders are prepaid from your wallet before they enter the seller queue. Your pickup date uses the browser calendar dropdown.
+        </p>
+        <form id="form-student-order">
+          <div class="form-row">
+            <div>
+              <label>Pickup date</label>
+              <div class="date-picker-row">
+                <input id="order-date" type="date" required>
+                <button type="button" class="btn btn-secondary" id="btn-open-date-picker" style="padding:0.6rem 0.9rem;">Calendar</button>
+              </div>
+            </div>
+            <div>
+              <label>Notes (optional)</label>
+              <input id="order-notes" maxlength="255" placeholder="Break time, allergy note, etc.">
+            </div>
+          </div>
+          <p id="wallet-prepay-note" style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;"></p>
+          <div class="card" style="background:var(--surface2);margin-bottom:1rem;">
+            <h3 style="margin-bottom:0.75rem;">Snacks</h3>
+            <div id="snacks-menu" class="order-menu-grid"></div>
+            <p id="snacks-empty" class="hidden" style="color:var(--muted)">No snacks available.</p>
+          </div>
+          <div class="card" style="background:var(--surface2);margin-bottom:1rem;">
+            <h3 style="margin-bottom:0.75rem;">Juices</h3>
+            <div id="juices-menu" class="order-menu-grid"></div>
+            <p id="juices-empty" class="hidden" style="color:var(--muted)">No juices available.</p>
+          </div>
+          <div class="queue-order-footer">
+            <strong id="order-total">Total: N0</strong>
+            <button type="submit" class="btn btn-primary">Pay and queue order</button>
+          </div>
+          <p id="order-msg" class="hidden" style="margin-top:1rem;"></p>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>My scheduled orders</h2>
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th>Sync</th></tr>
+          </thead>
+          <tbody id="scheduled-orders-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/pwa.js"></script>
+  <script src="../assets/js/student.js"></script>
+</body>
+</html>

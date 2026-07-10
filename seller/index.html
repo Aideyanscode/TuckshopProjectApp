@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>JA Tuckshop Seller</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body>
+  <section id="login-screen" class="nfc-panel">
+    <h2>Seller login</h2>
+    <p class="hint">Add pastries and drinks, watch stock, and manage the scheduled order queue.</p>
+    <form id="login-form">
+      <input type="text" id="seller-user" placeholder="Username" required autocomplete="username" style="width:100%;padding:1rem;margin-top:1rem;border-radius:8px;border:2px solid var(--surface2);background:var(--bg);color:var(--text);">
+      <input type="password" id="seller-pass" placeholder="Password" required autocomplete="current-password" style="width:100%;padding:1rem;margin-top:0.75rem;border-radius:8px;border:2px solid var(--surface2);background:var(--bg);color:var(--text);">
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1rem;">Login</button>
+    </form>
+    <p id="login-error" class="alert alert-error hidden" style="margin-top:1rem;"></p>
+    <p style="margin-top:1rem;"><a href="../index.html">Home</a></p>
+  </section>
+
+  <div id="seller-app" class="hidden">
+    <header class="app-header">
+      <h1>JA Tuckshop Seller</h1>
+      <nav class="nav-links">
+        <span class="role-badge" id="seller-display-name"></span>
+        <button type="button" class="btn btn-secondary" id="btn-logout" style="padding:0.5rem 1rem;">Logout</button>
+        <a href="../index.html">Home</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div class="tabs">
+        <button type="button" class="tab active" data-tab="queue">Order queue</button>
+        <button type="button" class="tab" data-tab="inventory">Inventory</button>
+        <button type="button" class="tab" data-tab="items">Add item</button>
+        <button type="button" class="tab" data-tab="transactions">Transactions</button>
+      </div>
+
+      <div id="tab-queue" class="tab-panel active">
+        <div class="card">
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:end;justify-content:space-between;">
+            <div class="form-row" style="margin-bottom:0;flex:1;">
+              <div>
+                <label>Queue date</label>
+                <input type="date" id="queue-date">
+              </div>
+              <div>
+                <label>Status</label>
+                <select id="queue-status">
+                  <option value="active">Active queue</option>
+                  <option value="pending">Pending only</option>
+                  <option value="prepared">Prepared only</option>
+                  <option value="completed">Completed only</option>
+                  <option value="all">All orders</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+              <button type="button" class="btn btn-secondary" id="btn-sync-queue">Sync online orders</button>
+              <button type="button" class="btn btn-secondary" id="btn-refresh-queue">Refresh queue</button>
+            </div>
+          </div>
+          <p id="queue-sync-msg" style="color:var(--muted);margin:1rem 0 0;"></p>
+        </div>
+
+        <div class="stat-cards" id="queue-stats"></div>
+
+        <div class="card">
+          <h2>Scheduled orders</h2>
+          <table>
+            <thead><tr><th>Placed</th><th>Student</th><th>Items</th><th>Notes</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="queue-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-inventory" class="tab-panel">
+        <div class="stat-cards" id="inventory-stats"></div>
+        <div class="card" id="inventory-pastries-card">
+          <h2>Pastries</h2>
+          <table>
+            <thead><tr><th></th><th>Product</th><th>Price</th><th>In stock</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="inventory-pastry-tbody"></tbody>
+          </table>
+        </div>
+        <div class="card" id="inventory-drinks-card">
+          <h2>Drinks</h2>
+          <table>
+            <thead><tr><th></th><th>Product</th><th>Price</th><th>In stock</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="inventory-drink-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-items" class="tab-panel">
+        <div class="card">
+          <h2>Add new item</h2>
+          <p style="color:var(--muted);margin-bottom:1rem;font-size:0.9rem;">Items must be either a pastry or a drink.</p>
+          <form id="form-add-item">
+            <div class="form-row">
+              <div><label>Name</label><input id="item-name" required placeholder="e.g. Meat pie"></div>
+              <div><label>Price (N)</label><input id="item-price" type="number" min="1" required></div>
+              <div><label>Type</label>
+                <select id="item-category" required>
+                  <option value="pastry">Pastry</option>
+                  <option value="drink">Drink</option>
+                </select>
+              </div>
+              <div><label>Starting stock</label><input id="item-stock" type="number" min="0" value="10"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add item</button>
+            <p id="item-form-msg" class="hidden"></p>
+          </form>
+        </div>
+      </div>
+
+      <div id="tab-transactions" class="tab-panel">
+        <div class="card">
+          <h2>Sales</h2>
+          <input type="date" id="tx-date" style="padding:0.6rem;margin-bottom:1rem;border-radius:8px;border:1px solid var(--surface2);background:var(--bg);color:var(--text);">
+          <p id="tx-summary" style="color:var(--muted);margin-bottom:1rem;"></p>
+          <table>
+            <thead><tr><th>#</th><th>Time</th><th>Student</th><th>Class</th><th>Counter</th><th>Amount</th></tr></thead>
+            <tbody id="transactions-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/product-groups.js"></script>
+  <script src="../assets/js/pwa.js"></script>
+  <script src="../assets/js/seller.js"></script>
+</body>
+</html>

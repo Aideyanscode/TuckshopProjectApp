@@ -1,0 +1,4 @@
+served_at,scheduled_date,student_number,student_name,class_name,notes,item_name,category,quantity,unit_price,line_total,order_total,origin_instance
+2026-07-10T00:53:07+01:00,2026-07-10,379,"Osasere Aideyan","SS2 11C",,"Meat pie",pastry,1,200.00,200.00,350.00,local-school-server
+2026-07-10T00:53:07+01:00,2026-07-10,379,"Osasere Aideyan","SS2 11C",,Biscuits,pastry,1,80.00,80.00,350.00,local-school-server
+2026-07-10T00:53:07+01:00,2026-07-10,379,"Osasere Aideyan","SS2 11C",,Water,drink,1,70.00,70.00,350.00,local-school-server

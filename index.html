@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>JA Tuckshop</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/icon.svg">
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+  <section class="landing">
+    <div class="brand-mark" aria-hidden="true">JA</div>
+    <h1>JA Tuckshop</h1>
+    <p style="color:var(--muted);max-width:620px;margin:1rem auto;">
+      Hybrid school tuckshop app for student order-ahead, seller queue management, POS checkout, and local-server sync when the school network comes online.
+    </p>
+    <div class="cards">
+      <a href="student/index.html" class="card-link">
+        <h2>Student orders</h2>
+        <p style="color:var(--muted);font-size:0.9rem;">Schedule your snack order for another day</p>
+      </a>
+      <a href="parent/index.html" class="card-link">
+        <h2>Parent top-up</h2>
+        <p style="color:var(--muted);font-size:0.9rem;">Pay for linked children with Paystack and view transactions</p>
+      </a>
+      <a href="seller/index.html" class="card-link">
+        <h2>Seller queue</h2>
+        <p style="color:var(--muted);font-size:0.9rem;">See queued orders from first placed to last placed</p>
+      </a>
+      <a href="pos/index.html" class="card-link">
+        <h2>POS terminal</h2>
+        <p style="color:var(--muted);font-size:0.9rem;">Local checkout with NFC wallet balance</p>
+      </a>
+      <a href="admin/index.html" class="card-link">
+        <h2>Admin</h2>
+        <p style="color:var(--muted);font-size:0.9rem;">Students, products, sellers, parents, and settings</p>
+      </a>
+    </div>
+    <p style="margin-top:2rem;font-size:0.85rem;color:var(--muted);">
+      API health: <span id="health-status">checking...</span>
+    </p>
+  </section>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/pwa.js"></script>
+  <script>
+    apiGet('health.php').then(d => {
+      document.getElementById('health-status').textContent = d.ok ? 'Database connected' : (d.message || 'Error');
+    }).catch(e => {
+      document.getElementById('health-status').textContent = e.message + ' - start Apache/PHP and import sql/schema.sql';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1a2332">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Parent Dashboard — Tuckshop</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="icon" href="../assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/icons/icon.svg">
+  <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body>
+  <section id="login-screen" class="nfc-panel">
+    <h2>👨‍👩‍👧 Parent login</h2>
+    <p class="hint">Top up your child's tuckshop wallet and view their purchases.</p>
+    <form id="login-form">
+      <input type="email" id="parent-email" placeholder="Email" required autocomplete="email" style="width:100%;padding:1rem;margin-top:1rem;border-radius:8px;border:2px solid var(--surface2);background:var(--bg);color:var(--text);">
+      <input type="password" id="parent-password" placeholder="Password" required autocomplete="current-password" style="width:100%;padding:1rem;margin-top:1rem;border-radius:8px;border:2px solid var(--surface2);background:var(--bg);color:var(--text);">
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1rem;">Login</button>
+    </form>
+    <p id="login-error" class="alert alert-error hidden" style="margin-top:1rem;"></p>
+    <p style="margin-top:1rem;"><a href="../index.html">← Home</a></p>
+  </section>
+
+  <div id="parent-app" class="hidden">
+    <header class="app-header">
+      <h1>👨‍👩‍👧 Parent Dashboard</h1>
+      <nav class="nav-links">
+        <span id="parent-greeting" style="color:var(--muted);font-size:0.9rem;"></span>
+        <button type="button" id="btn-logout">Logout</button>
+        <a href="../index.html">Home</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div class="tabs">
+        <button type="button" class="tab active" data-tab="wallet">Wallet top-up</button>
+        <button type="button" class="tab" data-tab="transactions">Transactions</button>
+        <button type="button" class="tab" data-tab="children">My children</button>
+      </div>
+
+      <div id="tab-wallet" class="tab-panel active">
+        <div class="card">
+          <h2>Pay with Paystack</h2>
+          <p style="color:var(--muted);margin-bottom:1rem;font-size:0.9rem;">
+            Select your child by NFC card ID, enter an amount, and pay securely. Funds are added only after Paystack confirms payment.
+          </p>
+          <div id="paystack-warning" class="alert alert-error hidden" style="margin-bottom:1rem;"></div>
+          <form id="form-topup">
+            <div class="form-row">
+              <div>
+                <label>Child (linked students)</label>
+                <select id="topup-student" required>
+                  <option value="">— Select child —</option>
+                </select>
+              </div>
+              <div>
+                <label>Or enter NFC card ID</label>
+                <input id="topup-nfc" placeholder="Scan or type NFC UID" autocomplete="off">
+              </div>
+              <div>
+                <label>Amount (₦)</label>
+                <input id="topup-amount" type="number" min="100" step="50" required placeholder="e.g. 2000">
+              </div>
+            </div>
+            <p id="selected-student-info" style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;"></p>
+            <button type="submit" class="btn btn-primary" id="btn-pay">Pay with Paystack</button>
+          </form>
+          <p id="topup-msg" class="hidden" style="margin-top:1rem;"></p>
+        </div>
+      </div>
+
+      <div id="tab-transactions" class="tab-panel">
+        <div class="card">
+          <h2>Purchase history</h2>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;">
+            <select id="tx-student-filter" style="padding:0.6rem;border-radius:8px;border:1px solid var(--surface2);background:var(--bg);color:var(--text);">
+              <option value="">All linked children</option>
+            </select>
+            <button type="button" class="btn btn-secondary" id="btn-refresh-tx">Refresh</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Child</th><th>Items</th><th>Amount</th><th>Balance after</th></tr>
+            </thead>
+            <tbody id="transactions-tbody"></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h2>Top-up history</h2>
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Child</th><th>Amount</th><th>Method</th><th>Reference</th></tr>
+            </thead>
+            <tbody id="topups-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-children" class="tab-panel">
+        <div class="stat-cards" id="children-stats"></div>
+        <div class="card">
+          <h2>Linked students</h2>
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Class</th><th>Student ID</th><th>NFC ID</th><th>Wallet balance</th></tr>
+            </thead>
+            <tbody id="children-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/pwa.js"></script>
+  <script src="../assets/js/parent.js"></script>
+</body>
+</html>
